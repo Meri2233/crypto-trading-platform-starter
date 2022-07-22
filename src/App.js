@@ -21,11 +21,11 @@ function App() {
         console.log(data.market_data.current_price.usd)
         console.log(data.market_data.price_change_percentage_24h)
         console.log(data.image.small)
-
       })
+    
+    
     // setTimeout(() => setisLoading(false), 500)
   }, []) 
-
   let [isLoading, setisLoading] = useState(false)
   let [money,setMoney] = useState("100")
   let [value,setValue] = useState("0.00")
