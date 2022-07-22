@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div style={{backgroundImage:'url(bg.svg)'}} className="App">
-      <h2>Earn some virtual money 💰</h2>
+      <h3>Earn some virtual money 💰</h3>
       <p className="font">To buy virtual load</p>
       <p className="wallet">🏦 Wallet: ${money}</p>
       <p className="portfolio">Portfolio Value:${value}</p>
