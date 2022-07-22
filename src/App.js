@@ -1,4 +1,5 @@
 import { useReducer, useEffect } from "react";
+import BuyandSell from "./components/BuyandSell";
 import Coin from "./components/Coin";
 import Holdings from "./components/Holdings";
 import Transactions from "./components/Tansactions";
@@ -8,7 +9,15 @@ const ACTIONS = {
   ISLOADING: 'isLoading',
   UPDATEBITCOIN: 'update_bitcoin',
   UPDATEETHEREUM: 'update_ethereum',
-  UPDATEDOGECOIN: 'update_dogecoin'
+  UPDATEDOGECOIN: 'update_dogecoin',
+  BUYBITCOIN: 'buy-bitcoin',
+  BUYETHEREUM: 'buy-ethereum',
+  BUYDOGECOIN: 'buy-dogecoin',
+  SELLBITCOIN: 'sell-bitcoin',
+  SELLETHEREUM: 'sell-ethereum',
+  SELLDOGECOIN: 'sell-dogecoin',
+  BUYORSELL: 'buy-sell',
+  UPDATEBUYORSELLAMOUNT: 'update-buyorsell'
 }
 
 function reducer(state, action) {
@@ -47,6 +56,31 @@ function reducer(state, action) {
       }
       return { ...state, dogecoin: updated_data }
 
+    case ACTIONS.BUYBITCOIN:
+      return { ...state, buyBitcoin: !state.buyBitcoin, buyEthereum: false, buyDogecoin: false }
+
+    case ACTIONS.BUYETHEREUM:
+      return { ...state, buyBitcoin: false, buyEthereum: !state.buyEthereum, buyDogecoin: false }
+
+    case ACTIONS.BUYDOGECOIN:
+      return { ...state, buyBitcoin: false, buyEthereum: false, buyDogecoin: !state.buyDogecoin }
+    
+    case ACTIONS.SELLBITCOIN:
+      return { ...state, sellBitcoin: !state.sellBitcoin, sellEthereum: false, sellDogecoin: false }
+
+    case ACTIONS.SELLETHEREUM:
+      return { ...state, sellBitcoin: false, sellEthereum: !state.sellEthereum, sellDogecoin: false }
+
+    case ACTIONS.SELLDOGECOIN:
+      return { ...state, sellBitcoin: false, sellEthereum: false, sellDogecoin: !state.buyDogecoin }
+      
+    case ACTIONS.BUYORSELL:
+      return { ...state, buy: !state.buy, sell: !state.sell }
+    
+    case ACTIONS.UPDATEBUYORSELLAMOUNT:
+      let newAmount = action.payload
+      return { ...state, buyingorSellingAmount: newAmount}
+
     default:
       return state;
   }
@@ -58,7 +92,14 @@ function App() {
     money: 100, value: 0.00, isLoading: false,
     bitcoin: { name: null, curr_price: null, price_change: null, logo: null },
     ethereum: { name: null, curr_price: null, price_change: null, logo: null },
-    dogecoin: { name: null, curr_price: null, price_change: null, logo: null }
+    dogecoin: { name: null, curr_price: null, price_change: null, logo: null },
+    buyBitcoin: false, buyEthereum: false, buyDogecoin: false,
+    sellBitcoin: false, sellEthereum: false, sellDogecoin: false,
+    bitcoinHolding: { have: 0, total_price: 0, curr_value: 0 },
+    ethereumHolding: { have: 0, total_price: 0, curr_value: 0 },
+    dogecoinHolding: { have: 0, total_price: 0, curr_value: 0 },
+    holdingCoin: [], transaction: [], buy: true, sell: false,
+    buyingorSellingAmount: 0,
   })
 
   useEffect(() => {
@@ -113,10 +154,15 @@ function App() {
         {state.isLoading && (<div className="Loading-Page">Loading...</div>)}
         {!state.isLoading && (
           <div className="coin-card">
-            <Coin />
+            <Coin ACTIONS={ACTIONS} />
           </div>
         )}
-          <div className="records">
+        {(state.buyBitcoin || state.buyEthereum || state.buyDogecoin) && (<BuyandSell
+          coinData={state.buyBitcoin ? state.bitcoin : state.buyEthereum ? state.ethereum : state.dogecoin}
+          holdingCoinData={state.buyBitcoin ? state.bitcoinHolding : state.buyEthereum ? state.ethereumHolding : state.dogecoinHolding}
+          ACTIONS={ACTIONS}
+        />)}
+        <div className="records">
           <Holdings />
           <Transactions />
         </div>
