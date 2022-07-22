@@ -1,8 +1,10 @@
 import { useReducer, useEffect } from "react";
+import Coin from "./components/Coin";
 import Holdings from "./components/Holdings";
 import Transactions from "./components/Tansactions";
+import Data from "./contexts/contextData";
 
-const ACTIONS={
+const ACTIONS = {
   ISLOADING: 'isLoading',
   UPDATEBITCOIN: 'update_bitcoin',
   UPDATEETHEREUM: 'update_ethereum',
@@ -17,7 +19,7 @@ function reducer(state, action) {
 
     case ACTIONS.ISLOADING:
       return { ...state, isLoading: !state.isLoading }
-    
+
     case ACTIONS.UPDATEBITCOIN:
       updated_data = {
         name: action.payload.name,
@@ -26,7 +28,7 @@ function reducer(state, action) {
         logo: action.payload.logo,
       }
       return { ...state, bitcoin: updated_data }
-    
+
     case ACTIONS.UPDATEETHEREUM:
       updated_data = {
         name: action.payload.name,
@@ -35,7 +37,7 @@ function reducer(state, action) {
         logo: action.payload.logo,
       }
       return { ...state, ethereum: updated_data }
-    
+
     case ACTIONS.UPDATEDOGECOIN:
       updated_data = {
         name: action.payload.name,
@@ -44,7 +46,7 @@ function reducer(state, action) {
         logo: action.payload.logo,
       }
       return { ...state, dogecoin: updated_data }
-    
+
     default:
       return state;
   }
@@ -55,12 +57,12 @@ function App() {
   let [state, dispatch] = useReducer(reducer, {
     money: 100, value: 0.00, isLoading: false,
     bitcoin: { name: null, curr_price: null, price_change: null, logo: null },
-    ethereum: { name: null, curr_price: null, price_change: null, logo: null},
+    ethereum: { name: null, curr_price: null, price_change: null, logo: null },
     dogecoin: { name: null, curr_price: null, price_change: null, logo: null }
   })
 
   useEffect(() => {
-    dispatch({type: ACTIONS.ISLOADING})
+    dispatch({ type: ACTIONS.ISLOADING })
     fetch('https://api.coingecko.com/api/v3/coins/bitcoin?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false')
       .then(response => response.json())
       .then((data) => {
@@ -98,19 +100,28 @@ function App() {
         })
       })
     setTimeout(() => dispatch({ type: ACTIONS.ISLOADING }), 500)
-  }, []) 
+  }, [])
 
-  return state.isLoading ? <div className="Loading-Page">Loading...</div> : (
-    <div style={{backgroundImage:'url(bg.svg)'}} className="App">
-      <h2>Earn some virtual money 💰</h2>
-      <p className="font">To buy virtual load</p>
-      <p className="wallet">🏦 Wallet: ${state.money}</p>
-      <p className="portfolio">Portfolio Value:${state.value}</p>
-      <div className="records">
-        <Holdings/>
-        <Transactions/>
+  return (
+
+    <Data.Provider value={{ state, dispatch }}>
+      <div style={{ backgroundImage: 'url(bg.svg)' }} className="App">
+        <h2>Earn some virtual money 💰</h2>
+        <p className="font">To buy virtual load</p>
+        <p className="wallet">🏦 Wallet: ${state.money}</p>
+        <p className="portfolio">Portfolio Value:${state.value}</p>
+        {state.isLoading && (<div className="Loading-Page">Loading...</div>)}
+        {!state.isLoading && (
+          <div className="coin-card">
+            <Coin />
+          </div>
+        )}
+          <div className="records">
+          <Holdings />
+          <Transactions />
+        </div>
       </div>
-    </div>
+    </Data.Provider>
   );
 }
 

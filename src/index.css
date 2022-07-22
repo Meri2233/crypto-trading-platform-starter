@@ -52,3 +52,14 @@
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   border-left:4px solid green;
 }
+
+.card-info{
+  display: flex;
+  border: 2px solid red;
+  margin: 10px;
+}
+
+.coins {
+  display: flex;
+  border: 2px solid green;
+}
