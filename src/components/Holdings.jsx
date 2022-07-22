@@ -1,8 +1,11 @@
 
-function Holdings(){
+function Holdings({}){
     return (
         <div className="holdings">
-            <h3>Current Holdings</h3>
+            <h2>Current Holdings</h2>
+            <div className="holdings-list">
+             Go buy some 🚀
+            </div>
         </div>
     )
 }

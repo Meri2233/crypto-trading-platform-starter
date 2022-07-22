@@ -1,8 +1,11 @@
 
-function Transactions(){
+function Transactions({}){
     return (
         <div className="transactions">
-            <h3>Transactions</h3>
+            <h2>Transactions</h2>
+            <div className="transactions-list">
+                No Transactions yet...
+            </div>
         </div>
     )
 }
