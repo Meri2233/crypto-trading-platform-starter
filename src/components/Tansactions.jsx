@@ -1,9 +1,9 @@
 
 function Transactions(){
     return (
-        div.transactions(
-            
-        )
+        <div className="transactions">
+            <h2>Transactions</h2>
+        </div>
     )
 }
 

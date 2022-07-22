@@ -6,3 +6,21 @@
   box-sizing:border-box;
   font-family: 'Poppins', sans-serif;
 }
+.App{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.records{
+  display: flex;
+}
+.font{
+  font-size: 10px;
+  opacity:0.5;
+}
+.portfolio{
+  font-size: 18px;
+  font-weight: bold;
+  margin-top:15px;
+}
