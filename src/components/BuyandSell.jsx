@@ -7,26 +7,32 @@ function BuyandSell({ coinData, ACTIONS }) {
 
     return (
         <div className="buy-sell">
-            {data.state.buy && (<>
+            {data.state.buy && (
                 <div className="box">
                     <p className="box-header">Buy {coinData.name}
                         <button onClick={() => data.dispatch({ type: ACTIONS.CLOSEPOPUP })} className="close">X</button>
                     </p>
-                    <p className="price">Current Price: ${coinData.curr_price.toFixed(6)}</p>
+                    <p className="curr-price">Current Price: ${parseFloat(coinData.curr_price.toFixed(6))}</p>
                     <div className="input">
                         <input
                             onChange={(e) =>
                                 data.dispatch({ type: ACTIONS.UPDATEBUYORSELLAMOUNT, payload: e.target.value })}
                             type="number"
-                            className="input-box" />
-                        <p className="max">Max: {(data.state.money / coinData.curr_price).toFixed(6)}</p>
+                            className="input-box"
+                            defaultValue={0} />
+                        <p className="max">Max: {parseFloat((data.state.money / coinData.curr_price).toFixed(6))}</p>
                     </div>
                     {data.state.buyingorSellingAmount > 0 && (
-                        <p className="msg">You will be charged for {(data.state.buyingorSellingAmount * coinData.curr_price).toFixed(2)}</p>
+                        <p className="msg">You will be charged for {parseFloat((data.state.buyingorSellingAmount * coinData.curr_price).toFixed(2))}</p>
                     )}
-                    <button className="buy">Buy</button>
-                    <button onClick={() => data.dispatch({ type: ACTIONS.BUYORSELL })} className="sell">Sell</button>
-
+                    <div className="btn">
+                        <button className="buysell" style={{ backgroundColor: data.state.buy ? '#0167FD' : 'transparent', outlineColor: data.state.buy ? '#0167FD' : 'gray' }}></button>
+                        <p className="text">Buy</p>
+                    </div>
+                    <div className="btn">
+                        <button style={{ backgroundColor: data.state.sell ? '#0167FD' : 'transparent', outlineColor: data.state.sell ? '#0167FD' : 'gray' }} onClick={() => data.dispatch({ type: ACTIONS.BUYORSELL })} className="buysell"></button>
+                        <p className="text">Sell</p>
+                    </div>
                     <button
                         onClick={() => data.dispatch({
                             type: ACTIONS.BUY,
@@ -38,33 +44,40 @@ function BuyandSell({ coinData, ACTIONS }) {
                                 time: Date().toString().substring(0, 24),
                             }
                         })}
-                        disabled={(data.state.buyingorSellingAmount * coinData.curr_price) > data.state.money ? true : false}
-                        className="big-buy-btn"
+                        disabled={((data.state.buyingorSellingAmount <= 0) || ((data.state.buyingorSellingAmount * coinData.curr_price) > data.state.money)) ? true : false}
+                        className="big-buysell-btn"
                     >
                         Buy
                     </button>
                 </div>
-            </>)}
-            {!data.state.buy && (<>
+            )}
+            {!data.state.buy && (
                 <div className="box">
                     <p className="box-header">Sell {coinData.name}
                         <button onClick={() => data.dispatch({ type: ACTIONS.CLOSEPOPUP })} className="close">X</button>
                     </p>
-                    <p className="price">Current Price: ${coinData.curr_price.toFixed(6)}</p>
+                    <p className="curr-price">Current Price: ${parseFloat(coinData.curr_price.toFixed(6))}</p>
                     <div className="input">
                         <input
                             onChange={(e) =>
                                 data.dispatch({ type: ACTIONS.UPDATEBUYORSELLAMOUNT, payload: e.target.value })}
                             type="number"
-                            className="input-box" />
+                            className="input-box"
+                            defaultValue={0} />
                         <p className="max">Max: {coinData.coinHave}</p>
                     </div>
                     {data.state.buyingorSellingAmount > 0 && (
-                        <p className="msg">You will receive {data.state.buyingorSellingAmount * coinData.curr_price}</p>
+                        <p className="msg">You will receive {parseFloat(data.state.buyingorSellingAmount * coinData.curr_price)}</p>
                     )}
-                    <button onClick={() => data.dispatch({ type: ACTIONS.BUYORSELL })} className="buy">Buy</button>
-                    <button className="sell">Sell</button>
 
+                    <div className="btn">
+                        <button className="buysell" style={{ backgroundColor: data.state.buy ? '#0167FD' : 'transparent', outlineColor: data.state.buy ? '#0167FD' : 'gray' }} onClick={() => data.dispatch({ type: ACTIONS.BUYORSELL })}></button>
+                        <p className="text">Buy</p>
+                    </div>
+                    <div className="btn">
+                        <button style={{ backgroundColor: data.state.sell ? '#0167FD' : 'transparent', outlineColor: data.state.sell ? '#0167FD' : 'gray' }} className="buysell"></button>
+                        <p className="text">Sell</p>
+                    </div>
                     <button
                         onClick={() => data.dispatch({
                             type: ACTIONS.SELL,
@@ -76,9 +89,13 @@ function BuyandSell({ coinData, ACTIONS }) {
                                 time: Date().toString().substring(0, 24),
                             }
                         })}
-                        disabled={(data.state.buyingorSellingAmount > coinData.have) ? true : false} className="big-buy-btn">Sell</button>
+                        disabled={((data.state.buyingorSellingAmount <= 0) || (data.state.buyingorSellingAmount > coinData.have)) ? true : false}
+                        className="big-buysell-btn"
+                    >
+                        Sell
+                    </button>
                 </div>
-            </>)}
+            )}
 
         </div>
     )

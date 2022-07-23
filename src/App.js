@@ -46,7 +46,7 @@ function reducer(state, action) {
       for (let i = 0; i < newHoldingCoin.length; i++) {
         if (newHoldingCoin[i].name === action.payload.name) {
           newHoldingCoin[i].curr_price = action.payload.curr_price
-          newHoldingCoin[i].profit_loss = (Number(((action.payload.curr_price * newHoldingCoin[i].coinHave) / newHoldingCoin[i].totalPayingPrice) * 100) - 100).toFixed(2)
+          newHoldingCoin[i].profit_loss = Number(((action.payload.curr_price * newHoldingCoin[i].coinHave) / newHoldingCoin[i].totalPayingPrice) * 100) - 100
         }
       }
       return { ...state, bitcoin: updated_data, holdingCoinList: newHoldingCoin }
@@ -64,7 +64,7 @@ function reducer(state, action) {
       for (let i = 0; i < newHoldingCoin.length; i++) {
         if (newHoldingCoin[i].name === action.payload.name) {
           newHoldingCoin[i].curr_price = action.payload.curr_price
-          newHoldingCoin[i].profit_loss = (Number(((action.payload.curr_price * newHoldingCoin[i].coinHave) / newHoldingCoin[i].totalPayingPrice) * 100) - 100).toFixed(2)
+          newHoldingCoin[i].profit_loss = Number(((action.payload.curr_price * newHoldingCoin[i].coinHave) / newHoldingCoin[i].totalPayingPrice) * 100) - 100
         }
       }
       return { ...state, ethereum: updated_data, holdingCoinList: newHoldingCoin }
@@ -82,7 +82,7 @@ function reducer(state, action) {
       for (let i = 0; i < newHoldingCoin.length; i++) {
         if (newHoldingCoin[i].name === action.payload.name) {
           newHoldingCoin[i].curr_price = action.payload.curr_price
-          newHoldingCoin[i].profit_loss = (Number(((action.payload.curr_price * newHoldingCoin[i].coinHave) / newHoldingCoin[i].totalPayingPrice) * 100) - 100).toFixed(2)
+          newHoldingCoin[i].profit_loss = Number(((action.payload.curr_price * newHoldingCoin[i].coinHave) / newHoldingCoin[i].totalPayingPrice) * 100) - 100
         }
       }
       return { ...state, dogecoin: updated_data, holdingCoinList: newHoldingCoin }
@@ -106,7 +106,7 @@ function reducer(state, action) {
       return { ...state, sellBitcoin: false, sellEthereum: false, sellDogecoin: !state.buyDogecoin }
 
     case ACTIONS.BUYORSELL:
-      return { ...state, buy: !state.buy, sell: !state.sell }
+      return { ...state, buy: !state.buy, sell: !state.sell, buyingorSellingAmount: 0 }
 
     case ACTIONS.UPDATEBUYORSELLAMOUNT:
       let newAmount = Number(action.payload)
@@ -120,7 +120,7 @@ function reducer(state, action) {
       return { ...state, totValue: newValue }
 
     case ACTIONS.CLOSEPOPUP:
-      return { ...state, buyBitcoin: false, buyEthereum: false, buyDogecoin: false }
+      return { ...state, buyBitcoin: false, buyEthereum: false, buyDogecoin: false, buy: true, sell: false }
 
     case ACTIONS.BUY:
       newHoldingCoin = JSON.parse(JSON.stringify(state.holdingCoinList))
@@ -288,11 +288,11 @@ function App() {
   return (
 
     <Data.Provider value={{ state, dispatch }}>
-      <div style={{ backgroundImage: 'url(bg.svg)' }} className="App">
+      <div className="App">
         <h2>Earn some virtual money 💰</h2>
-        <p className="font">To buy virtual load 🍕</p>
-        <p className="wallet">🏦 Wallet: ${state.money.toFixed(2)}</p>
-        <p className="portfolio">Portfolio Value:${state.totValue.toFixed(2)}</p>
+        <p className="second-header">To buy virtual load 🍕</p>
+        <p className="wallet">🏦 Wallet: ${parseFloat(state.money.toFixed(2))}</p>
+        <p className="portfolio">Portfolio Value:${parseFloat(state.totValue.toFixed(2))}</p>
 
         {state.isLoading && (<div className="Loading-Page">Loading...</div>)}
         {!state.isLoading && (<div className="coin-card"><Coin ACTIONS={ACTIONS} /></div>)}

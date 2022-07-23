@@ -12,7 +12,16 @@ function Coin({ACTIONS}) {
                 <div className="info">
                     <p className="price">${data.state.bitcoin.curr_price}</p>
                     <p className="name">{data.state.bitcoin.name}</p>
-                    <p className="price_change">Last 24h: {data.state.bitcoin.price_change}%</p>
+                    <p className="price-change">
+                        Last 24h:&nbsp;
+                        <span
+                            style={{
+                                color: data.state.bitcoin.price_change > 0 ? 'green' : 'red'
+                            }}
+                        >
+                            {data.state.bitcoin.price_change}%
+                        </span>
+                    </p>
                 </div>
             </div>
             <div onClick={() => data.dispatch({ type: ACTIONS.BUYETHEREUM })} className="card-info">
@@ -20,7 +29,16 @@ function Coin({ACTIONS}) {
                 <div className="info">
                     <p className="price">${data.state.ethereum.curr_price}</p>
                     <p className="name">{data.state.ethereum.name}</p>
-                    <p className="price_change">Last 24h: {data.state.ethereum.price_change}%</p>
+                    <p className="price-change">
+                        Last 24h:&nbsp;
+                        <span
+                            style={{
+                                color: data.state.ethereum.price_change > 0 ? 'green' : 'red'
+                            }}
+                        >
+                            {data.state.ethereum.price_change}%
+                        </span>
+                    </p>
                 </div>
             </div>
             <div onClick={() => data.dispatch({ type: ACTIONS.BUYDOGECOIN })} className="card-info">
@@ -28,7 +46,16 @@ function Coin({ACTIONS}) {
                 <div className="info">
                     <p className="price">${data.state.dogecoin.curr_price}</p>
                     <p className="name">{data.state.dogecoin.name}</p>
-                    <p className="price_change">Last 24h: {data.state.dogecoin.price_change}%</p>
+                    <p className="price-change">
+                        Last 24h:&nbsp;
+                        <span
+                            style={{
+                                color: data.state.dogecoin.price_change > 0 ? 'green' : 'red'
+                            }}
+                        >
+                            {data.state.dogecoin.price_change}%
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>
