@@ -294,7 +294,7 @@ function App() {
         <p className="wallet">🏦 Wallet: ${parseFloat(state.money.toFixed(2))}</p>
         <p className="portfolio">Portfolio Value:${parseFloat(state.totValue.toFixed(2))}</p>
 
-        {state.isLoading && (<div className="Loading-Page">Loading...</div>)}
+        {state.isLoading && (<div className="Loading-Page">Fetching...</div>)}
         {!state.isLoading && (<div className="coin-card"><Coin ACTIONS={ACTIONS} /></div>)}
 
         {(state.buyBitcoin || state.buyEthereum || state.buyDogecoin)
